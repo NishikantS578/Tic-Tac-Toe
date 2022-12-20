@@ -1,0 +1,31 @@
+.container{
+    height: 75vh;
+    width:100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.board{
+    background-color: bisque;
+    width: 50vh;
+    height: 50vh;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(3,1fr);
+}
+.cell{
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    font-size: 3rem;
+}
+.resetButton{
+    border:2px solid black;
+    border-radius: 3px;
+    margin:10px;
+    padding:4px 12px;
+}
+.resetButton::
