@@ -157,4 +157,11 @@ resetButton.setAttribute("class","resetButton")
 let container=document.querySelector(".container")
 gameboard1.createGameBoard()
 container.appendChild(resetButton)
+resetButton.addEventListener("click",function(){
+    for(let i=0;i<3;i++){
+        for(let j=0;j<3;j++){
+            gameboard1.cells[i][j].textContent=""
+        }
+    }
+})
 gameplay.play(playerArray[0],gameboard1)
