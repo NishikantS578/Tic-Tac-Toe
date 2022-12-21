@@ -4,9 +4,17 @@ let gameboard=function (){
     let cells=[]
     let container=document.querySelector(".container")
     let board=document.createElement("div")
+    let scoreBoardArray=[]
     board.setAttribute("class","board")
-    container.appendChild(board)
     let createGameBoard=function(){
+        for(let i=0;i<playerArray.length;i++){
+            scoreBoardArray[i]=document.createElement("div")
+            scoreBoardArray[i].setAttribute("class","scoreBoard")
+            scoreBoardArray[i].textContent=playerArray[i].name+" :"
+        }
+        container.appendChild(scoreBoardArray[0])
+        container.appendChild(board)
+        container.appendChild(scoreBoardArray[1])
         for(let i=0;i<3;i++){
             cells[i]=[]
             for(let j=0;j<3;j++){
@@ -18,12 +26,34 @@ let gameboard=function (){
             }
         }
     }
-    return {createGameBoard,cells,board}
+    let reset=function(){
+        for(let i=0;i<3;i++){
+            for(let j=0;j<3;j++){
+                gameboard1.cells[i][j].textContent=""
+            }
+        }
+    }
+    let updateScore=function(){
+        for(let i=0;i<playerArray.length;i++){
+            if(playerArray[i].score==3){
+                for(let j=0;j<2;j++){
+                    playerArray[j].score=0
+                    if(j==i){
+                        startMenu.banner.textContent=playerArray[i].name+" WINS!!!"
+                        startMenu.menu.setAttribute("class","menu")
+                    }
+                }
+            }
+            scoreBoardArray[i].textContent=playerArray[i].name+" :"+playerArray[i].score
+        }
+    }
+    return {createGameBoard,cells,board,updateScore,reset}
 }
 
 
 let player=function(name,symbol){
-    return {name,symbol}
+    let score=0
+    return {name,symbol,score}
 }
 
 let gameplay=((function(){
@@ -48,7 +78,10 @@ let gameplay=((function(){
                             winFlag=1
                         }
                         if(winFlag==1){
-                            gameboard.board.textContent=currentPlayer.name+" WINS!!!"
+                            currentPlayer.score+=1
+                            gameboard1.reset()
+                            gameboard1.updateScore()
+                            currentPlayer=playerArray[0]
                             return
                         }
                         for(let k=0;k<3;k++){
@@ -59,7 +92,10 @@ let gameplay=((function(){
                             winFlag=1
                         }
                         if(winFlag==1){
-                            gameboard.board.textContent=currentPlayer.name+" WINS!!!"
+                            currentPlayer.score+=1
+                            gameboard1.reset()
+                            gameboard1.updateScore()
+                            currentPlayer=playerArray[0]
                             return
                         }
                         k=parseInt(row)
@@ -88,7 +124,10 @@ let gameplay=((function(){
                             l+=1
                         }
                         if(winFlag==1 && counter==4){
-                            gameboard.board.textContent=currentPlayer.name+" WINS!!!"
+                            currentPlayer.score+=1
+                            gameboard1.reset()
+                            gameboard1.updateScore()
+                            currentPlayer=playerArray[0]
                             return
                         }
                         k=parseInt(row)
@@ -117,7 +156,10 @@ let gameplay=((function(){
                             l-=1
                         }
                         if(winFlag==1 && counter==4){
-                            gameboard.board.textContent=currentPlayer.name+" WINS!!!"
+                            currentPlayer.score+=1
+                            gameboard1.reset()
+                            gameboard1.updateScore()
+                            currentPlayer=playerArray[0]
                             return
                         }
                         for(let k=0;k<3;k++){
@@ -130,7 +172,8 @@ let gameplay=((function(){
                             }
                         }
                         if(tieFlag==1){
-                            gameboard.board.textContent="Tie..."
+                            gameboard1.reset()
+                            currentPlayer=playerArray[0]
                             return
                         }
                         currentPlayer=playerArray[(playerArray.indexOf(currentPlayer)+1)%2]
@@ -149,19 +192,54 @@ let gameplay=((function(){
     return {play}
 })())
 
+let startMenu=(function(){
+    let banner=document.createElement("div")
+    let container=document.querySelector(".container")
+    let menu=document.createElement("div")
+    let startButton=document.createElement("div")
+    let name=document.createElement("div")
+    let nameInput=document.createElement("input")
+    banner.setAttribute("class","banner")
+    menu.appendChild(banner)
+    let createStartMenu=function(){
+        nameInput.setAttribute("type","text")
+        name.textContent="Name :"
+        startButton.textContent="START"
+        menu.setAttribute("class","startMenu")
+        menu.setAttribute("class","menu")
+        startButton.setAttribute("class","startButton")
+        nameInput.setAttribute("class","nameInput")
+        name.setAttribute("class","nameLabel")
+        container.appendChild(menu)
+        menu.appendChild(name)
+        menu.appendChild(nameInput)
+        menu.appendChild(startButton)
+    }
+    
+    startButton.addEventListener("click",function(){
+        menu.setAttribute("class","menu invisible")
+        if(nameInput.value!=""){
+            playerArray[0].name=nameInput.value
+        }
+        gameboard1.updateScore()
+    })
+    return{createStartMenu,menu,banner}
+})()
+
+startMenu.createStartMenu()
 let playerArray=[player("player1","O"),player("AI","X")]
 let gameboard1=gameboard()
-let resetButton=document.createElement("div")
-resetButton.textContent="RESET"
-resetButton.setAttribute("class","resetButton")
+let restartButton=document.createElement("div")
 let container=document.querySelector(".container")
+restartButton.textContent="RESTART"
+restartButton.setAttribute("class","restartButton")
 gameboard1.createGameBoard()
-container.appendChild(resetButton)
-resetButton.addEventListener("click",function(){
-    for(let i=0;i<3;i++){
-        for(let j=0;j<3;j++){
-            gameboard1.cells[i][j].textContent=""
-        }
+container.appendChild(restartButton)
+restartButton.addEventListener("click",function(){
+    for(let i=0;i<2;i++){
+        playerArray[i].score=0
     }
+    gameboard1.updateScore()
+    gameboard1.reset()
 })
 gameplay.play(playerArray[0],gameboard1)

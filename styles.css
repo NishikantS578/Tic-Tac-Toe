@@ -1,10 +1,16 @@
+body{
+    margin:0;
+    width:100vw;
+    height:100vh;
+}
 .container{
     height: 75vh;
     width:100vw;
-    display: flex;
+    display: grid;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    place-items: center;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: 8fr 1fr;
 }
 .board{
     background-color: bisque;
@@ -22,10 +28,67 @@
     padding: 5px;
     font-size: 3rem;
 }
-.resetButton{
+.restartButton{
     border:2px solid black;
+    grid-column-start: 2;
+    grid-column-end: 3;
     border-radius: 3px;
     margin:10px;
     padding:4px 12px;
 }
-.resetButton::
+.scoreBoard{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.startButton{
+    border:3px solid black;
+    border-radius: 6px;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    text-align: center;
+    background-color: #ff8f60;
+}
+.menu{
+    width: 100vw;
+    height: 100vh;
+    background-color: coral;
+    position: absolute;
+    display:grid;
+    top:0;
+    right:0;
+    grid-template-columns: 35vw 10vw 10vw 10vw 35vw;
+    grid-template-rows: 35vh 15vh 15vh 35vh;
+    align-items: center;
+}
+.nameInput{
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    background-color: #ff8f60;
+}
+.nameLabel{
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    text-align: center;
+}
+.invisible{
+    display:none;
+}
+.banner{
+    border:3px solid black;
+    grid-column-start: 1;
+    grid-column-end: 6;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    align-self: stretch;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
